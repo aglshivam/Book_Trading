@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+const MongoClient = require('mongodb').MongoClient;
 const hbs = require('hbs');
 
 var app = express()
@@ -25,11 +26,39 @@ app.post('/login', urlencodedParser, function (req, res) {
 
 app.post('/signup', urlencodedParser, function (req, res) {
   if (!req.body) return res.sendStatus(400)
-  res.send('name =  ' + req.body.name)
-  res.send('city =  ' + req.body.city)
-  res.send('state = ' + req.body.state)
-  res.send('userid = ' + req.body.userid2)
-  res.send('pass = ' + req.body.pass)
+
+  //DB connection for signup
+MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
+  if (err) {
+    return console.log('Unable to connect to MongoDB server');
+  }
+  console.log('Connected to MongoDB server');
+
+  // Insert new doc into userInfo collection
+  db.collection('userInfo').insertOne({
+    name: req.body.name,
+    city: req.body.city,
+    state: req.body.state,
+    password: req.body.password,
+    userid: req.body.userid
+  }, (err, result) => {
+    if (err) {
+      return console.log('Unable to insert user', err);
+    }
+
+    console.log(result.ops);
+  });
+
+  db.close();
+});
+
+
+  // res.send('name =  ' + req.body.name)
+  // res.send('city =  ' + req.body.city)
+  // res.send('state = ' + req.body.state)
+  // res.send('userid = ' + req.body.userid2)
+  // res.send('pass = ' + req.body.pass)
+
 })
 
 app.listen(3000, () => {
