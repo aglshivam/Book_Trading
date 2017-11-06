@@ -16,6 +16,28 @@ app.get('/', function(req, res){
 
 app.post('/login', urlencodedParser, function (req, res) {
   if (!req.body) return res.sendStatus(400)
+
+  //check in the DB if user present or not
+  MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
+  if (err) {
+    return console.log('Unable to connect to MongoDB server');
+  }
+  console.log('Connected to MongoDB server for login request');
+  db.collection('userInfo').find({userid: req.body.userid1}).toArray().then((docs) => {
+    //console.log(JSON.stringify(docs, undefined, 2));
+    //if(docs.length)
+    console.log(docs)
+    //console.log('someting more')
+    //else
+    //  console.log('something went wrong')
+  });
+
+  // db.close();
+});
+
+
+
+
   //res.send('welcome, ' + req.body.userid1)
  // res.sendFile(__dirname + '/dashboard.html');
   res.render('dashboard.hbs', {
@@ -33,7 +55,7 @@ app.post('/signup', urlencodedParser, function (req, res) {
     if (err) {
       return console.log('Unable to connect to MongoDB server');
     }
-    console.log('Connected to MongoDB server');
+    console.log('Connected to MongoDB server for signup request');
 
     // Insert new doc into userInfo collection
     db.collection('userInfo').insertOne({
