@@ -28,6 +28,7 @@ app.post('/signup', urlencodedParser, function (req, res) {
   if (!req.body) return res.sendStatus(400)
 
   //DB connection for signup
+console.log("this is coming")
 MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
   if (err) {
     return console.log('Unable to connect to MongoDB server');
@@ -51,7 +52,6 @@ MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
 
   db.close();
 });
-
 
   // res.send('name =  ' + req.body.name)
   // res.send('city =  ' + req.body.city)
