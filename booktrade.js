@@ -28,36 +28,36 @@ app.post('/signup', urlencodedParser, function (req, res) {
   if (!req.body) return res.sendStatus(400)
 
   //DB connection for signup
-console.log("this is coming")
-MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
-  if (err) {
-    return console.log('Unable to connect to MongoDB server');
-  }
-  console.log('Connected to MongoDB server');
-
-  // Insert new doc into userInfo collection
-  db.collection('userInfo').insertOne({
-    name: req.body.name,
-    city: req.body.city,
-    state: req.body.state,
-    password: req.body.password,
-    userid: req.body.userid
-  }, (err, result) => {
+  console.log("this is coming")
+  MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
     if (err) {
-      return console.log('Unable to insert user', err);
+      return console.log('Unable to connect to MongoDB server');
     }
+    console.log('Connected to MongoDB server');
 
-    console.log(result.ops);
+    // Insert new doc into userInfo collection
+    db.collection('userInfo').insertOne({
+      name: req.body.name,
+      city: req.body.city,
+      state: req.body.state,
+      password: req.body.pass,
+      userid: req.body.userid2
+    }, (err, result) => {
+      if (err) {
+        return console.log('Unable to insert user', err);
+      }
+
+      console.log(result.ops);
+    });
+
+    db.close();
   });
 
-  db.close();
-});
+  res.render('dashboard.hbs', {
+    userName: req.body.userid2,
+    currentYear: new Date().getFullYear()
+  });
 
-  // res.send('name =  ' + req.body.name)
-  // res.send('city =  ' + req.body.city)
-  // res.send('state = ' + req.body.state)
-  // res.send('userid = ' + req.body.userid2)
-  // res.send('pass = ' + req.body.pass)
 
 })
 
