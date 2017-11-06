@@ -1,8 +1,10 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+const hbs = require('hbs');
 
 var app = express()
 
+app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/public'));
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -13,7 +15,12 @@ app.get('/', function(req, res){
 
 app.post('/login', urlencodedParser, function (req, res) {
   if (!req.body) return res.sendStatus(400)
-  res.send('welcome, ' + req.body.userid1)
+  //res.send('welcome, ' + req.body.userid1)
+ // res.sendFile(__dirname + '/dashboard.html');
+  res.render('dashboard.hbs', {
+    userName: req.body.userid1,
+    currentYear: new Date().getFullYear()
+  });
 })
 
 app.post('/signup', urlencodedParser, function (req, res) {
