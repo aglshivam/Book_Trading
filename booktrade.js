@@ -95,6 +95,14 @@ app.post('/signup', urlencodedParser, function (req, res) {
 
 })
 
+app.post("/addbooks", urlencodedParser, function (req, res) {
+    //var obj = JSON.parse(res)
+    console.log(req.body.title)
+    res.send('ok');
+});
+
+
+
 app.listen(3000, () => {
   console.log('Server is up on port 3000');
 });
