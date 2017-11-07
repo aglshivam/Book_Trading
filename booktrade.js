@@ -31,16 +31,15 @@ app.post('/login', urlencodedParser, function (req, res) {
         if(docs[0].password==req.body.pass1){
         	console.log('congratulation')
         	//dis
-        	res.render('dashboard.hbs', {
-		    userName: req.body.userid1,
-		    currentYear: new Date().getFullYear()
-		  });
+        	
 
         }else{
         	console.log('password does not match')
+        	res.send('Password is invalid!!!')
         }
     }else{
-          console.log('Username does not exists')  
+          console.log('Username does not exists')
+          res.send('UserID is invalid!!!')  
     }
   });
 
@@ -57,6 +56,15 @@ app.post('/login', urlencodedParser, function (req, res) {
   //   currentYear: new Date().getFullYear()
   // });
 })
+
+app.get('/dashboard', function(req, res){
+  res.sendFile(__dirname + '/index.html');
+	renderes.render('dashboard.hbs', {
+    userName: req.body.userid1,
+    currentYear: new Date().getFullYear()
+
+  });
+});
 
 app.post('/signup', urlencodedParser, function (req, res) {
   if (!req.body) return res.sendStatus(400)
