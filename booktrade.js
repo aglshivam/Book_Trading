@@ -23,13 +23,25 @@ app.post('/login', urlencodedParser, function (req, res) {
     return console.log('Unable to connect to MongoDB server');
   }
   console.log('Connected to MongoDB server for login request');
+  //check userid is present in DB or not
   db.collection('userInfo').find({userid: req.body.userid1}).toArray().then((docs) => {
-    //console.log(JSON.stringify(docs, undefined, 2));
-    //if(docs.length)
-    console.log(docs)
-    //console.log('someting more')
-    //else
-    //  console.log('something went wrong')
+    
+    if(docs.length){
+        console.log(docs[0].password)
+        if(docs[0].password==req.body.pass1){
+        	console.log('congratulation')
+        	//dis
+        	res.render('dashboard.hbs', {
+		    userName: req.body.userid1,
+		    currentYear: new Date().getFullYear()
+		  });
+
+        }else{
+        	console.log('password does not match')
+        }
+    }else{
+          console.log('Username does not exists')  
+    }
   });
 
   // db.close();
@@ -40,10 +52,10 @@ app.post('/login', urlencodedParser, function (req, res) {
 
   //res.send('welcome, ' + req.body.userid1)
  // res.sendFile(__dirname + '/dashboard.html');
-  res.render('dashboard.hbs', {
-    userName: req.body.userid1,
-    currentYear: new Date().getFullYear()
-  });
+  // res.render('dashboard.hbs', {
+  //   userName: req.body.userid1,
+  //   currentYear: new Date().getFullYear()
+  // });
 })
 
 app.post('/signup', urlencodedParser, function (req, res) {
