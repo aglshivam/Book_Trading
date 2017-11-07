@@ -71,8 +71,8 @@
           <div class="input-group" id="BookInfoInput" style="display:none">
             <input type="text" class="form-control" placeholder="Book ISBN" aria-describedby="basic-addon1" id="isbn">
             <input type="text" class="form-control" placeholder="Book Title" aria-describedby="basic-addon2" id="title">
-            <input type="text" class="form-control" placeholder="Author" aria-describedby="basic-addon2">
-            <input type="text" class="form-control" placeholder="Price" aria-describedby="basic-addon2">
+            <input type="text" class="form-control" placeholder="Author" aria-describedby="basic-addon2" id="author">
+            <input type="text" class="form-control" placeholder="Price" aria-describedby="basic-addon2" id="price">
             <button type="button" class="btn btn-default" id="add_book_detail">Add</button>
           </div>
         </div>
@@ -97,11 +97,14 @@
           $.ajax({
             type: "POST",
             url: 'addbooks',
-            data: { isbn: $('#isbn').val(), title: $('#title').val() },
+            data: { isbn: $('#isbn').val(), title: $('#title').val(),
+                    author: $('#author').val(), price: $('#price').val(),
+                    userid: '{{userName}}' },
             success:function(res){
-              console.log('server response is', res);
+              alert(res)
+              $('#BookInfoInput').hide()
           }});
-          $('#BookInfoInput').hide()
+          
       });
 
     </script>
