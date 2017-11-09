@@ -30,16 +30,18 @@ app.post('/login', urlencodedParser, function (req, res) {
           console.log(docs[0].password)
           if(docs[0].password==req.body.pass1){
           	console.log('congratulation')
-          	res.render('dashboard.hbs', {
-  		    userName: req.body.userid1,
-  		    currentYear: new Date().getFullYear()
-  		  });
+           	res.render('dashboard.hbs', {
+  		     userName: req.body.userid1,
+  		     currentYear: new Date().getFullYear()
+  		   });
+  		  //res.redirect('../views/dashboard')
+        console.log('redirect successful')
 
           }else{
-          	console.log('password does not match')
+          	console.log('no')
           }
       }else{
-            console.log('Username does not exists')  
+            console.log('no')  
       }
     });
   });
@@ -47,8 +49,7 @@ app.post('/login', urlencodedParser, function (req, res) {
 
 
 app.get('/dashboard', function(req, res){
-  res.sendFile(__dirname + '/index.html');
-	renderes.render('dashboard.hbs', {
+	res.render('dashboard.hbs', {
     userName: req.body.userid1,
     currentYear: new Date().getFullYear()
 

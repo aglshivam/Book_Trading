@@ -127,14 +127,21 @@
 
         $('#login_btn').on("click", function(){
 
-          alert("working fine");
+          //alert("working fine");
           $.ajax({
             type: "POST",
             url: 'login',
             data: { userid1: $('#userid1').val(), pass1: $('#password1').val() },
             success:function(res){
-              console.log('server response is', res);
-              alert(res);
+              console.log(res)
+              if(res=='no'){
+                console.log('server response is', res);
+                alert('Invalid Username or Password'); 
+              }              
+              else
+              {
+                $("html").html(res)
+              }
           }});
 
 
