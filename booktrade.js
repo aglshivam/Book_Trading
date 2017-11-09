@@ -103,7 +103,7 @@ app.post("/addbooks", urlencodedParser, function (req, res) {
       console.log('Connected to MongoDB server for signup request');
 
       // Insert new doc into userInfo collection
-      db.collection('userInfo').insertOne({
+      db.collection('bookInfo').insertOne({
         userid: req.body.userid,
         isbn: req.body.isbn,
         title: req.body.title,
@@ -120,6 +120,23 @@ app.post("/addbooks", urlencodedParser, function (req, res) {
       db.close();
     });
     res.send("Book record added!")
+});
+
+app.get("/viewbooks", function (req, res) {
+      //DB connection for signup
+    MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
+      if (err) {
+        return console.log('Unable to connect to MongoDB server');
+      }
+      console.log('Connected to MongoDB server for viewing books request');
+      //check userid is present in DB or not
+      db.collection('bookInfo').find().toArray().then((docs) => {
+        console.log(JSON.stringify(docs, undefined, 2))
+          res.send(JSON.stringify(docs, undefined, 2));
+      });
+
+      db.close();
+    });
 });
 
 app.listen(3000, () => {

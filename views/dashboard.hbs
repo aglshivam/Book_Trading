@@ -14,6 +14,40 @@
             background-size: cover;
             overflow: hidden;
           }
+    table {
+        width: 100%;
+    }
+
+    thead, tbody, tr, td, th { display: block; }
+
+    tr:after {
+        content: ' ';
+        display: block;
+        visibility: hidden;
+        clear: both;
+    }
+
+    thead th {
+        height: 30px;
+
+        /*text-align: left;*/
+    }
+
+    tbody {
+        height: 120px;
+        overflow-y: auto;
+    }
+
+    thead {
+        /* fallback */
+    }
+
+
+    tbody td, thead th {
+        width: 19.2%;
+        float: left;
+    }
+
     </style>
 
     <!-- Bootstrap -->
@@ -75,6 +109,11 @@
             <input type="text" class="form-control" placeholder="Price" aria-describedby="basic-addon2" id="price">
             <button type="button" class="btn btn-default" id="add_book_detail">Add</button>
           </div>
+          <div class="input-group" id="booksinfo" style="display:none">
+            <table class="table table-striped table-bordered table-hover" cellpadding="5" cellspacing="5" id="t1">
+            </table>
+          </div>
+
         </div>
 
       </div>
@@ -85,8 +124,9 @@
     </footer>
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    
     <script type="text/javascript">
 
       $('#addbooks').on("click", function(){
@@ -104,8 +144,33 @@
               alert(res)
               $('#BookInfoInput').hide()
           }});
-          
       });
+
+      $(document).ready(function(){
+
+        $('#viewbooks').on("click", function(){
+            $('#booksinfo').show()
+            $.ajax({
+              type: "GET",
+              url: 'viewbooks',
+              success:function(res){
+                $("#t1").empty()
+                  var data = JSON.parse(res)
+
+                  for (var i=0; i<data.length; i++) {
+                    var userid = data[i].userid;
+                    var isbn = data[i].isbn;
+                    var title = data[i].title;
+                    var price = data[i].price;
+                    var author = data[i].author;
+                    var tData = '<tr><td class="filterable-cell">'+userid+'</td><td class="filterable-cell">'+isbn+'</td><td class="filterable-cell">'+title+'</td><td class="filterable-cell">'+price+'</td><td class="filterable-cell">'+author+'</td><td class="filterable-cell"><button type="button" class="btn btn-default" id="buy'+isbn+'">Buy</button></td></tr>'
+                    $("#t1").append(tData);
+                  }
+              }});
+        });
+
+      });
+
 
     </script>
   </body>
