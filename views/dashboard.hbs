@@ -81,7 +81,7 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          
+
           <ul class="nav navbar-nav navbar-right">
             <li>
               <h3>Welcome, {{userName}}</h3>
@@ -101,7 +101,7 @@
           </div>
         </div>
 
-        <div class="col-xs-6 col-md-4">
+        <div id="btn-result" class="col-xs-6 col-md-4">
           <div class="input-group" id="BookInfoInput" style="display:none">
             <input type="text" class="form-control" placeholder="Book ISBN" aria-describedby="basic-addon1" id="isbn">
             <input type="text" class="form-control" placeholder="Book Title" aria-describedby="basic-addon2" id="title">
@@ -184,6 +184,16 @@
         });
       };
 
+      $('#viewprofile').click(function() {
+        $.getJSON('/viewProfile', function(data) {
+          var name = data[0].name;
+          var city = data[0].city;
+          var state = data[0].state;
+          var tableHTML = "<table style='border: 1px solid black;' id=&quot;t1&quot;><tr><td>Name</td><td>" + name + "</td></tr><tr><td>City</td><td>" + city + "</td><tr><td>State</td><td>" + state + "</td></tr></table>"
+          $("#btn-result").html(tableHTML);
+          console.log(name);
+        })
+      })
 
     </script>
   </body>

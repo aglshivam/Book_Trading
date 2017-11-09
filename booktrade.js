@@ -8,13 +8,15 @@ var app = express()
 app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/public'));
 
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var urlencodedParser = bodyParser.urlencoded({
+  extended: false
+})
 
-app.get('/', function(req, res){
+app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.post('/login', urlencodedParser, function (req, res) {
+app.post('/login', urlencodedParser, function(req, res) {
   if (!req.body) return res.sendStatus(400)
 
   //check in the DB if user present or not
@@ -24,6 +26,7 @@ app.post('/login', urlencodedParser, function (req, res) {
     }
     console.log('Connected to MongoDB server for login request');
     //check userid is present in DB or not
+
     db.collection('userInfo').find({userid: req.body.userid1}).toArray().then((docs) => {
       db.close();
       if(docs.length){
@@ -59,7 +62,8 @@ app.get('/dashboard', function(req, res){
   });
 });
 
-app.post('/signup', urlencodedParser, function (req, res) {
+
+app.post('/signup', urlencodedParser, function(req, res) {
   if (!req.body) return res.sendStatus(400)
 
   //DB connection for signup
@@ -153,11 +157,39 @@ app.get("/buybooks", function (req, res) {
         if (err) {
           return console.log('Unable to insert book', err);
         }
-        onsole.log(result.ops);
+        console.log(result.ops);
       });
 
       db.close();
     });
+
+});
+
+app.get('/viewProfile', function(req, res) {
+  console.log("inside viewProfile")
+  MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
+    if (err) {
+      return console.log('Unable to connect to MongoDB server');
+    }
+    console.log('Connected to MongoDB server for view profile');
+
+    //   db.collection('userInfo').find({userid: 'shivam'}).toArray().then((docs) => {
+    //   console.log(JSON.stringify(docs, undefined, 2));
+    //   res.send(JSON.stringify(docs, undefined, 2))
+    // })
+    db.collection('userInfo').find({
+      userid: 'shivam'
+    }).toArray(function(err, result) {
+      if (err) {
+        console.log(err)
+        res.json(err)
+      } else {
+        console.log(result[0])
+        res.json(result)
+      }
+    })
+    db.close();
+  });
 });
 
 app.listen(3000, () => {
