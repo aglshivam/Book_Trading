@@ -27,6 +27,7 @@ app.post('/login', urlencodedParser, function (req, res) {
     db.collection('userInfo').find({userid: req.body.userid1}).toArray().then((docs) => {
       
       if(docs.length){
+
           console.log(docs[0].password)
           if(docs[0].password==req.body.pass1){
           	console.log('congratulation')
@@ -39,9 +40,11 @@ app.post('/login', urlencodedParser, function (req, res) {
 
           }else{
           	console.log('no')
+            res.send("no")
           }
       }else{
-            console.log('no')  
+            console.log('no')
+            res.send("no")  
       }
     });
   });
