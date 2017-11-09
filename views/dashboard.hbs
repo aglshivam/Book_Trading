@@ -7,36 +7,27 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Book trading club</title>
 
-    <style type="text/css">
-      .full {
-            padding: 0 !important;
-            margin: 0 auto !important;
-            background-size: cover;
-            overflow: hidden;
-          }
-    </style>
+  <!-- Bootstrap -->
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    <!-- Bootstrap -->
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
-  <body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -65,94 +56,107 @@
       </div><!-- /.container-fluid -->
     </nav>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-8">
-          <div class="btn-group btn-group-lg btn-group-vertical" role="group" aria-label="...">
-            <button type="button" class="btn btn-default" id="viewbooks">View All Books</button>
-            <button type="button" class="btn btn-default" id="addbooks">Add Books</button>
-            <button type="button" class="btn btn-default" id="viewprofile">View Profile</button>
-          </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-4 col-sm-4 col-md-4">
+        <div class="btn-group btn-group-lg btn-group-vertical" role="group" aria-label="...">
+          <button type="button" class="btn btn-default" id="viewbooks">View All Books</button>
+          <button type="button" class="btn btn-default" id="addbooks">Add Books</button>
+          <button type="button" class="btn btn-default" id="viewprofile">View Profile</button>
         </div>
-
-        <div id="btn-result" class="col-xs-6 col-md-4">
-          <div class="input-group" id="addinput" style="display:none">
-            <input type="text" class="form-control" placeholder="Book ISBN" aria-describedby="basic-addon1" id="isbn">
-            <input type="text" class="form-control" placeholder="Book Title" aria-describedby="basic-addon2" id="title">
-            <input type="text" class="form-control" placeholder="Author" aria-describedby="basic-addon2" id="author">
-            <input type="text" class="form-control" placeholder="Price" aria-describedby="basic-addon2" id="price">
-            <button type="button" class="btn btn-default" id="add_book_detail">Add</button>
-          </div>
-          <div class="input-group" id="booksinfo" style="display:none">
-            <table class="table table-striped table-bordered table-hover" cellpadding="5" cellspacing="5" id="t1">
-            </table>
-          </div>
-
-        </div>
-
       </div>
+      
+      <div id="btn-result" class="col-xs-8 col-sm-8 col-md-8">
+        <div class="input-group" id="bookinput" style="display:none">
+          <input type="text" class="form-control" placeholder="Book ISBN" aria-describedby="basic-addon1" id="isbn">
+          <input type="text" class="form-control" placeholder="Book Title" aria-describedby="basic-addon2" id="title">
+          <input type="text" class="form-control" placeholder="Author" aria-describedby="basic-addon2" id="author">
+          <input type="text" class="form-control" placeholder="Price" aria-describedby="basic-addon2" id="price">
+          <button type="button" class="btn btn-default" id="add_book_detail">Add</button>
+        </div>
+        <div id="booksinfo" style="display:none">
+          <table class="table table-bordered table-striped" id="bookTable"></table>
+        </div>
+        <div id="userprofile" style="display:none">
+          <table class="table table-bordered table-striped" id="profileTable"></table>
+          <button type="button" name="updateProfile">Update</button>
+        </div>
+      </div>
+
     </div>
+  </div>
+      
+  <footer>
+    <p>Copyright {{currentYear}}</p>
+  </footer>
 
-    <footer>
-      <p>Copyright {{currentYear}}</p>
-    </footer>
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    
-    <script type="text/javascript">
+  <script type="text/javascript">
+    $('#addbooks').on("click", function() {
+      $('#booksinfo').hide();
+      $('#userprofile').hide();
+      $('#bookinput').show()
+    });
 
-      $('#addbooks').on("click", function(){
-          $('#addinput').show()
-          $('#booksinfo').hide()
-      });
+    $('#add_book_detail').on("click", function() {
+      $.ajax({
+        type: "POST",
+        url: '/addbooks',
+        data: {
+          isbn: $('#isbn').val(),
+          title: $('#title').val(),
+          author: $('#author').val(),
+          price: $('#price').val(),
+          userid: '{{userName}}'
+        },
+        success: function(res) {
+          alert(res)
+          $('#bookinput').hide()
+        }});
+    });
 
-      $('#add_book_detail').on("click", function(){
-          $.ajax({
-            type: "POST",
-            url: '/addbooks',
-            data: { isbn: $('#isbn').val(), title: $('#title').val(),
-                    author: $('#author').val(), price: $('#price').val(),
-                    userid: '{{userName}}' },
-            success:function(res){
-              alert(res)
-              $('#addinput').hide()
-          }});
-      });
+    $(document).ready(function() {
 
-      $(document).ready(function(){
-
-        $('#viewbooks').on("click", function(){
-            $('#booksinfo').show()
-            $('#addinput').hide()
-            $.ajax({
-              type: "GET",
-              url: '/viewbooks',
-              success:function(res){
-                $("#t1").empty()
-                  var data = JSON.parse(res)
-
-                  for (var i=0; i<data.length; i++) {
-                    var userid = data[i].userid;
-                    var isbn = data[i].isbn;
-                    var title = data[i].title;
-                    var price = data[i].price;
-                    var author = data[i].author;
-                    var tData = '<tr><td class="filterable-cell">'+userid+'</td><td class="filterable-cell">'+isbn+'</td><td class="filterable-cell">'+title+'</td><td class="filterable-cell">'+price+'</td><td class="filterable-cell">'+author+'</td><td class="filterable-cell"><button type="button" class="btn btn-default" onclick="myFunction(this)" id="'+isbn+'#'+userid+'">Buy</button></td></tr>'
-                    $("#t1").append(tData);
-                  }
-              }});
-        });
-
-      });
-
-      function myFunction(elem) {
-        var tokens = elem.id.split("#")
+      $('#viewbooks').on("click", function() {
+        $('#bookinput').hide();
+        $('#userprofile').hide();
+        $('#booksinfo').show()
         $.ajax({
-              type: "POST",
-              url: '/buybooks',
-              data: { isbn: tokens[0],
+          type: "GET",
+          url: '/viewbooks',
+          success: function(res) {
+            $("#bookTable").empty()
+            var data = JSON.parse(res)
+
+            for (var i = 0; i < data.length; i++) {
+              var userid = data[i].userid;
+              var isbn = data[i].isbn;
+              var title = data[i].title;
+              var price = data[i].price;
+              var author = data[i].author;
+              var tData = '<tr><td>' + userid + '</td><td>' + isbn + '</td><td>' + title + '</td><td>' + price + '</td><td>' + author + '</td><td><button type="button" class="btn btn-default" onclick="myFunction(this)" id=' + isbn +
+                '">Buy</button></td></tr>'
+              $("#bookTable").append(tData);
+            }
+          }
+        });
+      });
+    });
+
+    function myFunction(elem) {
+      //alert(elem.id);
+      $('#bookinput').hide();
+      $('#booksinfo').hide();
+      $('#userprofile').hide();
+      var tokens = elem.id.split("#")
+      $.ajax({
+        type: "POST",
+        url: '/buybooks',
+        data: { isbn: tokens[0],
                       clientid: '{{userName}}',
                       ownerid: tokens[1]
                     },
@@ -160,20 +164,23 @@
                   alert(res)
                 $('#booksinfo').hide()
               }
-        });
-      };
+      });
+    };
 
-      $('#viewprofile').click(function() {
-        $.getJSON('/viewProfile', function(data) {
-          var name = data[0].name;
-          var city = data[0].city;
-          var state = data[0].state;
-          var tableHTML = "<table style='border: 1px solid black;' id=&quot;t1&quot;><tr><td>Name</td><td>" + name + "</td></tr><tr><td>City</td><td>" + city + "</td><tr><td>State</td><td>" + state + "</td></tr></table>"
-          $("#btn-result").html(tableHTML);
-          console.log(name);
-        })
+    $('#viewprofile').click(function() {
+      $('#bookinput').hide();
+      $('#booksinfo').hide();
+      $('#userprofile').show();
+      $.getJSON('/viewProfile', function(data) {
+        var name = data[0].name;
+        var city = data[0].city;
+        var state = data[0].state;
+        var tableData = "<tr><td>Name</td><td>" + name + "</td></tr><tr><td>City</td><td>" + city + "</td><tr><td>State</td><td>" + state + "</td></tr>"
+        document.getElementById("profileTable").innerHTML = tableData;
+        console.log("in html" + name);
       })
+    })
+  </script>
+</body>
 
-    </script>
-  </body>
 </html>
