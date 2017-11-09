@@ -152,8 +152,9 @@ app.post("/buybooks", urlencodedParser, function (req, res) {
       //check userid is present in DB or not
       console.log(req.body);
       db.collection('deals').insertOne({
+        clientid: req.body.clientid,
         isbn: req.body.isbn,
-        userid: req.body.userid
+        ownerid: req.body.ownerid
       }, (err, result) => {
         if (err) {
           return console.log('Unable to insert book', err);
