@@ -140,7 +140,8 @@
               }              
               else
               {
-                $("html").html(res)
+                //$("html").html(res)
+                location.href = "http://127.0.0.1:3000/dashboard/?userid1=" + $('#userid1').val()
               }
           }});
 

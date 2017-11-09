@@ -25,7 +25,7 @@ app.post('/login', urlencodedParser, function (req, res) {
     console.log('Connected to MongoDB server for login request');
     //check userid is present in DB or not
     db.collection('userInfo').find({userid: req.body.userid1}).toArray().then((docs) => {
-      
+      db.close();
       if(docs.length){
 
           console.log(docs[0].password)
@@ -52,10 +52,10 @@ app.post('/login', urlencodedParser, function (req, res) {
 
 
 app.get('/dashboard', function(req, res){
+  console.log(req.query.userid1)
 	res.render('dashboard.hbs', {
-    userName: req.body.userid1,
+    userName: req.query.userid1,
     currentYear: new Date().getFullYear()
-
   });
 });
 
@@ -133,6 +133,27 @@ app.get("/viewbooks", function (req, res) {
       db.collection('bookInfo').find().toArray().then((docs) => {
         console.log(JSON.stringify(docs, undefined, 2))
           res.send(JSON.stringify(docs, undefined, 2));
+      });
+
+      db.close();
+    });
+});
+
+app.get("/buybooks", function (req, res) {
+      //TODO: Add deal to deal collection
+    MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
+      if (err) {
+        return console.log('Unable to connect to MongoDB server');
+      }
+      console.log('Connected to MongoDB server for viewing books request');
+      //check userid is present in DB or not
+      db.collection('deals').insertOne({
+        isbn: req.body.isbn
+      }, (err, result) => {
+        if (err) {
+          return console.log('Unable to insert book', err);
+        }
+        onsole.log(result.ops);
       });
 
       db.close();

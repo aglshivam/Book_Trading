@@ -136,7 +136,7 @@
       $('#add_book_detail').on("click", function(){
           $.ajax({
             type: "POST",
-            url: 'addbooks',
+            url: '/addbooks',
             data: { isbn: $('#isbn').val(), title: $('#title').val(),
                     author: $('#author').val(), price: $('#price').val(),
                     userid: '{{userName}}' },
@@ -152,7 +152,7 @@
             $('#booksinfo').show()
             $.ajax({
               type: "GET",
-              url: 'viewbooks',
+              url: '/viewbooks',
               success:function(res){
                 $("#t1").empty()
                   var data = JSON.parse(res)
@@ -163,13 +163,26 @@
                     var title = data[i].title;
                     var price = data[i].price;
                     var author = data[i].author;
-                    var tData = '<tr><td class="filterable-cell">'+userid+'</td><td class="filterable-cell">'+isbn+'</td><td class="filterable-cell">'+title+'</td><td class="filterable-cell">'+price+'</td><td class="filterable-cell">'+author+'</td><td class="filterable-cell"><button type="button" class="btn btn-default" id="buy'+isbn+'">Buy</button></td></tr>'
+                    var tData = '<tr><td class="filterable-cell">'+userid+'</td><td class="filterable-cell">'+isbn+'</td><td class="filterable-cell">'+title+'</td><td class="filterable-cell">'+price+'</td><td class="filterable-cell">'+author+'</td><td class="filterable-cell"><button type="button" class="btn btn-default" onclick="myFunction(this)" id='+isbn+'">Buy</button></td></tr>'
                     $("#t1").append(tData);
                   }
               }});
         });
 
       });
+
+      function myFunction(elem) {
+        //alert(elem.id);
+        $('#booksinfo').hide()
+        $.ajax({
+              type: "POST",
+              url: '/buybook',
+              data: { isbn: elem.id },
+              success:function(res){
+
+              }
+        });
+      };
 
 
     </script>
