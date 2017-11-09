@@ -143,16 +143,17 @@ app.get("/viewbooks", function (req, res) {
     });
 });
 
-app.get("/buybooks", function (req, res) {
-      //TODO: Add deal to deal collection
+app.post("/buybooks", urlencodedParser, function (req, res) {
     MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
       if (err) {
         return console.log('Unable to connect to MongoDB server');
       }
-      console.log('Connected to MongoDB server for viewing books request');
+      console.log('Connected to MongoDB server for buying books request');
       //check userid is present in DB or not
+      console.log(req.body);
       db.collection('deals').insertOne({
-        isbn: req.body.isbn
+        isbn: req.body.isbn,
+        userid: req.body.userid
       }, (err, result) => {
         if (err) {
           return console.log('Unable to insert book', err);
@@ -162,7 +163,7 @@ app.get("/buybooks", function (req, res) {
 
       db.close();
     });
-
+    res.send("Book requested")
 });
 
 app.get('/viewProfile', function(req, res) {

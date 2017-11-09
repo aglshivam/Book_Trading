@@ -14,40 +14,6 @@
             background-size: cover;
             overflow: hidden;
           }
-    table {
-        width: 100%;
-    }
-
-    thead, tbody, tr, td, th { display: block; }
-
-    tr:after {
-        content: ' ';
-        display: block;
-        visibility: hidden;
-        clear: both;
-    }
-
-    thead th {
-        height: 30px;
-
-        /*text-align: left;*/
-    }
-
-    tbody {
-        height: 120px;
-        overflow-y: auto;
-    }
-
-    thead {
-        /* fallback */
-    }
-
-
-    tbody td, thead th {
-        width: 19.2%;
-        float: left;
-    }
-
     </style>
 
     <!-- Bootstrap -->
@@ -102,7 +68,7 @@
         </div>
 
         <div id="btn-result" class="col-xs-6 col-md-4">
-          <div class="input-group" id="BookInfoInput" style="display:none">
+          <div class="input-group" id="addinput" style="display:none">
             <input type="text" class="form-control" placeholder="Book ISBN" aria-describedby="basic-addon1" id="isbn">
             <input type="text" class="form-control" placeholder="Book Title" aria-describedby="basic-addon2" id="title">
             <input type="text" class="form-control" placeholder="Author" aria-describedby="basic-addon2" id="author">
@@ -130,7 +96,8 @@
     <script type="text/javascript">
 
       $('#addbooks').on("click", function(){
-          $('#BookInfoInput').show()
+          $('#addinput').show()
+          $('#booksinfo').hide()
       });
 
       $('#add_book_detail').on("click", function(){
@@ -142,7 +109,7 @@
                     userid: '{{userName}}' },
             success:function(res){
               alert(res)
-              $('#BookInfoInput').hide()
+              $('#addinput').hide()
           }});
       });
 
@@ -150,6 +117,7 @@
 
         $('#viewbooks').on("click", function(){
             $('#booksinfo').show()
+            $('#addinput').hide()
             $.ajax({
               type: "GET",
               url: '/viewbooks',
@@ -172,14 +140,13 @@
       });
 
       function myFunction(elem) {
-        //alert(elem.id);
-        $('#booksinfo').hide()
         $.ajax({
               type: "POST",
-              url: '/buybook',
-              data: { isbn: elem.id },
+              url: '/buybooks',
+              data: { isbn: elem.id, userid: '{{userName}}' },
               success:function(res){
-
+                  alert(res)
+                $('#booksinfo').hide()
               }
         });
       };
