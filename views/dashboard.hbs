@@ -194,23 +194,43 @@
     $('#notifybtn').on("click", function() {
       $.ajax({
         type: "POST",
-        url: '/fetchnotifications',
+        url: '/getnotifications_owner',
         data: {
           userid: '{{userName}}'
         },
         success: function(res) {
           $("#notifylist").empty()
-            var data = JSON.parse(res)
+          var data = JSON.parse(res)
 
-            for (var i = 0; i < data.length; i++) {
-              var clientid = data[i].clientid;
-              var isbn = data[i].isbn;
+          for (var i = 0; i < data.length; i++) {
+            var clientid = data[i].clientid;
+            var isbn = data[i].isbn;
 
-              var listData = '<li><a href="#">You have a book request for book isbn '+isbn+' from user '+clientid+'</a><div class="btn-group" role="group" aria-label="..."><button type="button" class="btn btn-default" onclick="accept(this)" id="' + isbn +
-                '">Accept</button><button type="button" class="btn btn-default" onclick="reject(this)" id="' + isbn +
-                '">Reject</button></div></li><li role="separator" class="divider"></li>'
-              $("#notifylist").append(listData);
+            var listData = '<li><a href="#">You have a book request for book isbn '+isbn+' from user '+clientid+'</a><div class="btn-group" role="group" aria-label="..."><button type="button" class="btn btn-default" onclick="accept(this)" id="' + isbn +
+              '">Accept</button><button type="button" class="btn btn-default" onclick="reject(this)" id="' + isbn +
+              '">Reject</button></div></li><li role="separator" class="divider"></li>'
+            $("#notifylist").append(listData);
+          }
+          $.ajax({
+            type: "POST",
+            url: '/getnotifications_client',
+            data: {
+              userid: '{{userName}}'
+            },
+            success: function(res) {
+              var data = JSON.parse(res)
+
+              for (var i = 0; i < data.length; i++) {
+                var clientid = data[i].clientid;
+                var isbn = data[i].isbn;
+                var ownerid = data[i].ownerid;
+
+                var listData = '<li><a href="#">Your book request for book isbn '+isbn+' from user '+ownerid+' has been '+data[i].status+'</a><div class="btn-group" role="group" aria-label="..."><button type="button" class="btn btn-default" onclick="ok(this)" id="' + isbn +
+                  '">OK</button></div></li><li role="separator" class="divider"></li>'
+                $("#notifylist").append(listData);
+              }
             }
+          });
         }
       });
     });
