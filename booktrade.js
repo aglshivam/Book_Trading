@@ -56,8 +56,6 @@ app.post('/login', urlencodedParser, function(req, res) {
 
 app.get('/dashboard', urlencodedParser, function(req, res){
   console.log(req.query.userid1)
-  //counting number of notifications of the user
-  var len;
   MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
       if (err) {
         return console.log('Unable to connect to MongoDB server');
@@ -65,12 +63,7 @@ app.get('/dashboard', urlencodedParser, function(req, res){
       console.log('Connected to MongoDB server for counting the notifications');
       //check userid is present in DB or not
       
-      db.collection('deals').find({ownerid:req.query.userid1}).toArray().then((docs) => {
-        //console.log(JSON.stringify(docs, undefined, 2))
-        console.log('user id for notifications = ' + req.query.userid1)
-        console.log(docs.length+' length of array')
-        len = docs.length;
-        console.log(len + ' length of the arrya')
+      db.collection('deals').find( { $or: [ { ownerid: req.query.userid1 }, { clientid: req.query.userid1 } ] }).toArray().then((docs) => {
 
         res.render('dashboard.hbs', {
           userName: req.query.userid1,
@@ -80,7 +73,6 @@ app.get('/dashboard', urlencodedParser, function(req, res){
          
       });
       db.close();
-      console.log(len + ' length of the arrya1')
     });
 });
 
@@ -176,7 +168,8 @@ app.post("/buybooks", urlencodedParser, function (req, res) {
       db.collection('deals').insertOne({
         clientid: req.body.clientid,
         isbn: req.body.isbn,
-        ownerid: req.body.ownerid
+        ownerid: req.body.ownerid,
+        status: 'notseen'
       }, (err, result) => {
         if (err) {
           return console.log('Unable to insert book', err);
@@ -234,6 +227,37 @@ app.post("/fetchnotifications", urlencodedParser, function (req, res) {
       });
       db.close();
     });
+});
+
+app.post("/acceptreq", urlencodedParser, function (req, res) {
+      //DB connection for notifications
+      var aisbn = req.body.isbn
+    MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
+      if (err) {
+        return console.log('Unable to connect to MongoDB server');
+      }
+      console.log('Connected to MongoDB server for accepting the notifications');
+      //check userid is present in DB or not
+      
+      db.collection('deals').findOneAndUpdate({isbn:aisbn}, {$set:{status:'accept'}})
+      db.close();
+    });
+    res.send("Response sent!")
+});
+
+app.post("/rejectreq", urlencodedParser, function (req, res) {
+      //DB connection for notifications
+      var risbn = req.body.isbn
+    MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
+      if (err) {
+        return console.log('Unable to connect to MongoDB server');
+      }
+      console.log('Connected to MongoDB server for rejecting the notifications');
+      //check userid is present in DB or not
+      db.collection('deals').findOneAndUpdate({isbn:risbn}, {$set:{status:'reject'}})
+      db.close();
+    });
+    res.send("Response sent!")
 });
 
 app.listen(3000, () => {

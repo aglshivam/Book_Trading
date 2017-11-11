@@ -207,7 +207,7 @@
               var isbn = data[i].isbn;
 
               var listData = '<li><a href="#">You have a book request for book isbn '+isbn+' from user '+clientid+'</a><div class="btn-group" role="group" aria-label="..."><button type="button" class="btn btn-default" onclick="accept(this)" id="' + isbn +
-                '">Accept</button><button type="button" class="btn btn-default" onclick="reject(this)" id=' + isbn +
+                '">Accept</button><button type="button" class="btn btn-default" onclick="reject(this)" id="' + isbn +
                 '">Reject</button></div></li><li role="separator" class="divider"></li>'
               $("#notifylist").append(listData);
             }
@@ -223,7 +223,7 @@
           isbn: elem.id
         },
         success: function(res) {
-
+          alert(res)
         }
       });
     };
@@ -236,7 +236,7 @@
           isbn: elem.id
         },
         success: function(res) {
-          
+          alert(res)
         }
       });
     };
