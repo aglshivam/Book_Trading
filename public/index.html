@@ -76,32 +76,32 @@
       </div>
 
       <div class="col-xs-6 col-md-4">
-        <form class="form-group" action="http://127.0.0.1:3000/signup" method="post">
+        <form class="form-group" action="http://127.0.0.1:3000/signup" id="signup-form" method="post">
           <div>
-            <label for="userName">Name</label>
+            <label for="userName">Name<font color="red">*</font></label>
             <input type="text" class="form-control" id="userName" placeholder="Full Name" name="name">
           </div>
 
           <div class="form-group">
-            <label for="city">City</label>
+            <label for="city">City<font color="red">*</font></label>
             <input type="text" class="form-control" id="city" placeholder="City" name="city">
           </div>
 
           <div class="form-group">
-            <label for="state">State</label>
+            <label for="state">State<font color="red">*</font></label>
             <input type="text" class="form-control" id="state" placeholder="State" name="state">
           </div>
 
           <div class="form-group">
-            <label for="userID">User ID</label>
+            <label for="userID">User ID<font color="red">*</font></label>
             <input type="text" class="form-control" id="userID" placeholder="User ID" name="userid2">
           </div>
 
           <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="pass">
+            <label for="exampleInputPassword1">Password<font color="red">*</font></label>
+            <input type="password" class="form-control" id="pass" placeholder="Password" name="pass">
           </div>
-          <button type="submit" class="btn btn-default">Sign up</button>
+          <button type="button" onclick="submitform1()" id="signup-btn" class="btn btn-default">Sign up</button>
         </form>
       </div>
 
@@ -154,8 +154,35 @@
       });
 
 
+      
+
 
     });
+
+      function submitform1() {
+        console.log('printing');
+        var f = document.getElementById('signup-form');
+        console.log('form find');
+       
+        if(document.getElementById("userName").value === '') {
+           alert("Username is Mandatory");
+        }
+        else if(document.getElementById("city").value === '') {
+           alert("City is Mandatory");
+        }
+        else if(document.getElementById("state").value === '') {
+           alert("State is Mandatory");
+        }
+        else if(document.getElementById("userID").value === '') {
+           alert("UserID is Mandatory");
+        }
+        else if(document.getElementById("pass").value === '') {
+           alert("Password is Mandatory");
+        }else {
+         f.submit();
+        }
+
+      }
   </script>
 </body>
 
