@@ -54,12 +54,34 @@ app.post('/login', urlencodedParser, function(req, res) {
 });
 
 
-app.get('/dashboard', function(req, res){
+app.get('/dashboard', urlencodedParser, function(req, res){
   console.log(req.query.userid1)
-	res.render('dashboard.hbs', {
-    userName: req.query.userid1,
-    currentYear: new Date().getFullYear()
-  });
+  //counting number of notifications of the user
+  var len;
+  MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
+      if (err) {
+        return console.log('Unable to connect to MongoDB server');
+      }
+      console.log('Connected to MongoDB server for counting the notifications');
+      //check userid is present in DB or not
+      
+      db.collection('deals').find({ownerid:req.query.userid1}).toArray().then((docs) => {
+        //console.log(JSON.stringify(docs, undefined, 2))
+        console.log('user id for notifications = ' + req.query.userid1)
+        console.log(docs.length+' length of array')
+        len = docs.length;
+        console.log(len + ' length of the arrya')
+
+        res.render('dashboard.hbs', {
+          userName: req.query.userid1,
+          countReq : docs.length,
+          currentYear: new Date().getFullYear()
+        });
+         
+      });
+      db.close();
+      console.log(len + ' length of the arrya1')
+    });
 });
 
 

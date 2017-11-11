@@ -43,7 +43,7 @@
             <li>
               <div class = "navbar-form navbar-left">
                 <button class="btn btn-primary" type="button">
-              Notifications <span class="badge">{{count_req}}</span>
+              Notifications <span class="badge">{{countReq}}</span>
               </button> 
               </div>
               
@@ -138,8 +138,7 @@
               var title = data[i].title;
               var price = data[i].price;
               var author = data[i].author;
-              var tData = '<tr><td>' + userid + '</td><td>' + isbn + '</td><td>' + title + '</td><td>' + price + '</td><td>' + author + '</td><td><button type="button" class="btn btn-default" onclick="myFunction(this)" id=' + isbn +
-                '">Buy</button></td></tr>'
+              var tData = '<tr><td>' + userid + '</td><td>' + isbn + '</td><td>' + title + '</td><td>' + price + '</td><td>' + author + '</td><td><button type="button" class="btn btn-default" onclick="myFunction(this)" id="'+isbn+'#'+userid+'">Buy</button></td></tr>'
               $("#bookTable").append(tData);
             }
           }
