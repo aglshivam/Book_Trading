@@ -216,6 +216,26 @@ app.get('/viewProfile', function(req, res) {
   });
 });
 
+app.post("/fetchnotifications", urlencodedParser, function (req, res) {
+      //DB connection for notifications
+      var user = req.body.userid
+    MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
+      if (err) {
+        return console.log('Unable to connect to MongoDB server');
+      }
+      console.log('Connected to MongoDB server for counting the notifications');
+      //check userid is present in DB or not
+      
+      db.collection('deals').find({ownerid:user}).toArray().then((docs) => {
+
+        console.log(JSON.stringify(docs, undefined, 2))
+          res.send(JSON.stringify(docs, undefined, 2));
+         
+      });
+      db.close();
+    });
+});
+
 app.listen(3000, () => {
   console.log('Server is up on port 3000');
 });

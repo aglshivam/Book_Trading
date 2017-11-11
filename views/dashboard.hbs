@@ -43,9 +43,14 @@
         <ul class="nav navbar-nav navbar-right">
           <li>
             <div class="navbar-form navbar-left">
-              <button class="btn btn-primary" type="button">
-              Notifications <span class="badge">{{countReq}}</span>
-              </button>
+              <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="notifybtn">
+                  Notifications <span class="badge">{{countReq}}</span>
+                </button>
+                <ul class="dropdown-menu" id="notifylist">
+                  
+                </ul>
+              </div>
             </div>
 
           </li>
@@ -185,6 +190,57 @@
         console.log("in html" + name);
       })
     })
+
+    $('#notifybtn').on("click", function() {
+      $.ajax({
+        type: "POST",
+        url: '/fetchnotifications',
+        data: {
+          userid: '{{userName}}'
+        },
+        success: function(res) {
+          $("#notifylist").empty()
+            var data = JSON.parse(res)
+
+            for (var i = 0; i < data.length; i++) {
+              var clientid = data[i].clientid;
+              var isbn = data[i].isbn;
+
+              var listData = '<li><a href="#">You have a book request for book isbn '+isbn+' from user '+clientid+'</a><div class="btn-group" role="group" aria-label="..."><button type="button" class="btn btn-default" onclick="accept(this)" id="' + isbn +
+                '">Accept</button><button type="button" class="btn btn-default" onclick="reject(this)" id=' + isbn +
+                '">Reject</button></div></li><li role="separator" class="divider"></li>'
+              $("#notifylist").append(listData);
+            }
+        }
+      });
+    });
+
+    function accept(elem) {
+      $.ajax({
+        type: "POST",
+        url: '/acceptreq',
+        data: {
+          isbn: elem.id
+        },
+        success: function(res) {
+
+        }
+      });
+    };
+
+    function reject(elem) {
+      $.ajax({
+        type: "POST",
+        url: '/rejectreq',
+        data: {
+          isbn: elem.id
+        },
+        success: function(res) {
+          
+        }
+      });
+    };
+
   </script>
 </body>
 
