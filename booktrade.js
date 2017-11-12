@@ -251,7 +251,6 @@ app.post("/getnotifications_client", urlencodedParser, function (req, res) {
 
         console.log(JSON.stringify(docs, undefined, 2))
           res.send(JSON.stringify(docs, undefined, 2));
-
       });
       db.close();
     });
@@ -268,6 +267,7 @@ app.post("/acceptreq", urlencodedParser, function (req, res) {
       //check userid is present in DB or not
 
       db.collection('deals').findOneAndUpdate({isbn:aisbn}, {$set:{status:'accept'}})
+      db.collection('deals').remove({$and:[{isbn:aisbn}, {status:'notseen'}]})
       db.close();
     });
     res.send("Response sent!")
@@ -283,6 +283,7 @@ app.post("/rejectreq", urlencodedParser, function (req, res) {
       console.log('Connected to MongoDB server for rejecting the notifications');
       //check userid is present in DB or not
       db.collection('deals').findOneAndUpdate({isbn:risbn}, {$set:{status:'reject'}})
+      db.collection('deals').remove({$and:[{isbn:risbn}, {status:'notseen'}]})
       db.close();
     });
     res.send("Response sent!")
@@ -337,6 +338,21 @@ app.post("/updateinfo", urlencodedParser, (req,res) => {
   })
 })
 
+app.post("/finalizedeal", urlencodedParser, function (req, res) {
+      //DB connection for notifications
+      var risbn = req.body.isbn
+    MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
+      if (err) {
+        return console.log('Unable to connect to MongoDB server');
+      }
+      console.log('Connected to MongoDB server for finalizing the deal');
+      //check userid is present in DB or not
+      db.collection('deals').remove({isbn:risbn})
+      db.collection('bookInfo').remove({isbn:risbn})
+      db.close();
+    });
+    res.send("Deal finalized!")
+});
 
 app.listen(3000, () => {
   console.log('Server is up on port 3000');

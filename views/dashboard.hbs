@@ -241,8 +241,8 @@
                 var isbn = data[i].isbn;
                 var ownerid = data[i].ownerid;
 
-                var listData = '<li><a href="#">Your book request for book isbn '+isbn+' from user '+ownerid+' has been '+data[i].status+'</a><div class="btn-group" role="group" aria-label="..."><button type="button" class="btn btn-default" onclick="ok(this)" id="' + isbn +
-                  '">OK</button></div></li><li role="separator" class="divider"></li>'
+                var listData = '<li><a href="#">Your book request for book isbn '+isbn+' from user '+ownerid+' has been '+data[i].status+'</a><div class="btn-group" role="group" aria-label="..."><button type="button" class="btn btn-default" onclick="done(this)" id="' + isbn +
+                  '">Done</button></div></li><li role="separator" class="divider"></li>'
                 $("#notifylist").append(listData);
               }
             }
@@ -270,6 +270,7 @@
         },
         success: function(res) {
           alert(res)
+          location.href = "http://127.0.0.1:3000/dashboard/?userid1=" + {{userName}}
         }
       });
     };
@@ -283,6 +284,21 @@
         },
         success: function(res) {
           alert(res)
+          location.href = "http://127.0.0.1:3000/dashboard/?userid1=" + {{userName}}
+        }
+      });
+    };
+
+    function done(elem) {
+      $.ajax({
+        type: "POST",
+        url: '/finalizedeal',
+        data: {
+          isbn: elem.id
+        },
+        success: function(res) {
+          alert(res)
+          location.href = "http://127.0.0.1:3000/dashboard/?userid1=" + {{userName}}
         }
       });
     };
