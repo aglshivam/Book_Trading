@@ -133,7 +133,8 @@ app.post("/addbooks", urlencodedParser, function (req, res) {
         isbn: req.body.isbn,
         title: req.body.title,
         price: req.body.price,
-        author: req.body.author
+        author: req.body.author,
+        thumbnail: req.body.thumbnail
       }, (err, result) => {
         if (err) {
           return console.log('Unable to insert book', err);

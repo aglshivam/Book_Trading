@@ -81,6 +81,7 @@
           <input type="text" class="form-control" placeholder="Book Title" aria-describedby="basic-addon2" id="title">
           <input type="text" class="form-control" placeholder="Author" aria-describedby="basic-addon2" id="author">
           <input type="text" class="form-control" placeholder="Price" aria-describedby="basic-addon2" id="price">
+          <input type="text" class="form-control" placeholder="url" aria-describedby="basic-addon2" id="thumb">
           <button type="button" class="btn btn-default" id="add_book_detail">Add</button>
         </div>
         <div id="booksinfo" style="display:none">
@@ -119,6 +120,10 @@
     });
 
     $('#add_book_detail').on("click", function() {
+      if(document.getElementById("thumb").value=='')
+      {
+          document.getElementById("thumb").value='https://upload.wikimedia.org/wikipedia/en/4/45/Mac_Finder_icon_%28OS_X_Yosemite%29.png';  
+      }
       $.ajax({
         type: "POST",
         url: '/addbooks',
@@ -127,6 +132,7 @@
           title: $('#title').val(),
           author: $('#author').val(),
           price: $('#price').val(),
+          thumbnail: $('#thumb').val(),
           userid: '{{userName}}'
         },
         success: function(res) {
@@ -155,7 +161,8 @@
               var title = data[i].title;
               var price = data[i].price;
               var author = data[i].author;
-              var tData = '<tr><td>' + userid + '</td><td>' + isbn + '</td><td>' + title + '</td><td>' + price + '</td><td>' + author + '</td><td><button type="button" class="btn btn-default" onclick="myFunction(this)" id="' + isbn +
+              var thumbnail = data[i].thumbnail;
+              var tData = '<tr><td>' + userid + '</td><td>' + isbn + '</td><td>' + title + '</td><td>' + price + '</td><td>' + author + '</td><td><img src="'+thumbnail+'" alt="no-img" height="50" width="50"></img></td><td><button type="button" class="btn btn-default" onclick="myFunction(this)" id="' + isbn +
                 '#' + userid + '">Buy</button></td></tr>'
               $("#bookTable").append(tData);
             }
