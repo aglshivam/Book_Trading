@@ -57,7 +57,7 @@ app.post('/login', urlencodedParser, function(req, res) {
 
 
 app.get('/dashboard', urlencodedParser, function(req, res){
-  console.log(req.query.userid1)
+  console.log('new dashboard for' + req.query.userid1)
 
   userID = req.query.userid1;
   //counting number of notifications of the user
