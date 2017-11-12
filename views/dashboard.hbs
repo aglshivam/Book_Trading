@@ -116,7 +116,8 @@
     $('#addbooks').on("click", function() {
       $('#booksinfo').hide();
       $('#userprofile').hide();
-      $('#bookinput').show()
+      $('#updateform').hide();
+      $('#bookinput').show();
     });
 
     $('#add_book_detail').on("click", function() {
@@ -144,10 +145,11 @@
 
     $(document).ready(function() {
 
-      $('#viewbooks').on("click", function() {
+        $('#viewbooks').on("click", function() {
         $('#bookinput').hide();
         $('#userprofile').hide();
-        $('#booksinfo').show()
+        $('#updateform').hide();
+        $('#booksinfo').show();
         $.ajax({
           type: "GET",
           url: '/viewbooks',
@@ -253,7 +255,10 @@
 
     $('#profileUpdateBtn').click(function(){
       $('#userprofile').hide();
+      $('#bookinput').hide();
+      $('#booksinfo').hide();
       $('#updateform').show();
+      
       console.log("profileUpdateBtn clicked");
       $.ajax({
         type: "GET",
