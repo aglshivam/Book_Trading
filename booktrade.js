@@ -3,6 +3,8 @@ var bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const hbs = require('hbs');
 
+var userID;
+
 var app = express()
 
 app.set('view engine', 'hbs');
@@ -47,7 +49,7 @@ app.post('/login', urlencodedParser, function(req, res) {
           }
       }else{
             console.log('no')
-            res.send("no")  
+            res.send("no")
       }
     });
   });
@@ -56,13 +58,18 @@ app.post('/login', urlencodedParser, function(req, res) {
 
 app.get('/dashboard', urlencodedParser, function(req, res){
   console.log(req.query.userid1)
+
+  userID = req.query.userid1;
+  //counting number of notifications of the user
+  var len;
   MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
       if (err) {
         return console.log('Unable to connect to MongoDB server');
       }
       console.log('Connected to MongoDB server for counting the notifications');
       //check userid is present in DB or not
-      
+
+
       db.collection('deals').find( { $or: [ { ownerid: req.query.userid1 }, { clientid: req.query.userid1 } ] }).toArray().then((docs) => {
 
         res.render('dashboard.hbs', {
@@ -70,7 +77,7 @@ app.get('/dashboard', urlencodedParser, function(req, res){
           countReq : docs.length,
           currentYear: new Date().getFullYear()
         });
-         
+
       });
       db.close();
     });
@@ -195,7 +202,7 @@ app.get('/viewProfile', function(req, res) {
     //   res.send(JSON.stringify(docs, undefined, 2))
     // })
     db.collection('userInfo').find({
-      userid: 'shivam'
+      userid: userID
     }).toArray(function(err, result) {
       if (err) {
         console.log(err)
@@ -218,12 +225,12 @@ app.post("/getnotifications_owner", urlencodedParser, function (req, res) {
       }
       console.log('Connected to MongoDB server for counting the notifications');
       //check userid is present in DB or not
-      
+
       db.collection('deals').find({ownerid:user}).toArray().then((docs) => {
 
         console.log(JSON.stringify(docs, undefined, 2))
           res.send(JSON.stringify(docs, undefined, 2));
-         
+
       });
       db.close();
     });
@@ -238,12 +245,12 @@ app.post("/getnotifications_client", urlencodedParser, function (req, res) {
       }
       console.log('Connected to MongoDB server for counting the notifications');
       //check userid is present in DB or not
-      
+
       db.collection('deals').find({clientid:user}).toArray().then((docs) => {
 
         console.log(JSON.stringify(docs, undefined, 2))
           res.send(JSON.stringify(docs, undefined, 2));
-         
+
       });
       db.close();
     });
@@ -258,7 +265,7 @@ app.post("/acceptreq", urlencodedParser, function (req, res) {
       }
       console.log('Connected to MongoDB server for accepting the notifications');
       //check userid is present in DB or not
-      
+
       db.collection('deals').findOneAndUpdate({isbn:aisbn}, {$set:{status:'accept'}})
       db.close();
     });
@@ -279,6 +286,56 @@ app.post("/rejectreq", urlencodedParser, function (req, res) {
     });
     res.send("Response sent!")
 });
+
+app.get("/fillform", urlencodedParser, (req,res) => {
+  console.log("inside fillform");
+  MongoClient.connect('mongodb://localhost:27017/db', (err, db) => {
+    if (err) {
+      return console.log('Unable to connect to MongoDB server');
+    }
+    console.log("mongo connected");
+  db.collection('userInfo').find({
+    userid: userID
+  }).toArray(function(err, result) {
+    if (err) {
+      console.log(err)
+      res.json(err)
+    } else {
+      console.log("filling form with default")
+      console.log(result[0].name)
+      res.render('dashboard.hbs', {
+        Uname: result[0].name,
+        Ucity:result[0].city,
+        Ustate: result[0].state
+      });
+    }
+  });
+  db.close();
+})
+});
+
+app.post("/updateinfo", urlencodedParser, (req,res) => {
+  console.log("inside updateinfo");
+  MongoClient.connect('mongodb://localhost:27017/db', (err,db) => {
+    if (err){console.log("unable to connect to server")}
+    else{
+      var Uname = req.body.newname;
+      var Ucity = req.body.newcity;
+      var Ustate = req.body.newstate;
+      db.collection('userInfo').findOneAndUpdate({userid: userID}, {
+        $set: {
+          name: Uname,
+          city: Ucity,
+          state: Ustate
+        }
+      }, {returnOriginal: false}).then((result) => {console.log(result)})
+      var url = "/dashboard/?userid1="+userID
+      res.redirect(url)
+    }
+    db.close();
+  })
+})
+
 
 app.listen(3000, () => {
   console.log('Server is up on port 3000');

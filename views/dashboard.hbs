@@ -23,7 +23,7 @@
     <![endif]-->
 </head>
 
-<body>
+<body background="/user_background.jpg">
   <nav class="navbar navbar-default">
     <div class="container-fluid" style="background-color:#563d7c">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -48,7 +48,7 @@
                   Notifications <span class="badge">{{countReq}}</span>
                 </button>
                 <ul class="dropdown-menu" id="notifylist">
-                  
+
                 </ul>
               </div>
             </div>
@@ -87,8 +87,16 @@
           <table class="table table-bordered table-striped" id="bookTable"></table>
         </div>
         <div id="userprofile" style="display:none">
-          <table class="table table-bordered table-striped" id="profileTable"></table>
-          <button type="button" name="updateProfile">Update</button>
+          <table class="table table-hover" id="profileTable"></table>
+          <button type="button" name="updateProfile" id="profileUpdateBtn">Update</button>
+        </div>
+        <div id="updateform" style="display:none">
+          <form action="/updateinfo" method="post">
+            Name: <input type="text" name="newname" id="newname" value="{{Uname}}"><br>
+            City: <input type="text" name="newcity" id="newcity" value="{{Ucity}}"><br>
+            State: <input type="text" name="newstate" id="newstate" value="{{Ustate}}"><br>
+            <input type="submit" name="submitbtn" value="Submit">
+          </form>
         </div>
       </div>
 
@@ -180,6 +188,7 @@
     $('#viewprofile').click(function() {
       $('#bookinput').hide();
       $('#booksinfo').hide();
+      $('#updateform').hide();
       $('#userprofile').show();
       $.getJSON('/viewProfile', function(data) {
         var name = data[0].name;
@@ -232,6 +241,16 @@
             }
           });
         }
+      });
+    });
+
+    $('#profileUpdateBtn').click(function(){
+      $('#userprofile').hide();
+      $('#updateform').show();
+      console.log("profileUpdateBtn clicked");
+      $.ajax({
+        type: "GET",
+        url: "/fillform"
       });
     });
 
